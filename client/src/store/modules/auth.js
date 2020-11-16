@@ -1,16 +1,20 @@
 import Vue from "vue"
 
 const state = {
+  token: '',
   user: {},
-  signedIn: false
+  isSignedIn: false
 }
 
 const mutations = {
+  setToken (state, v) {
+    state.token = v
+  },
   setUser (state, v) {
     state.user = v
   },
-  setSignedIn (state, v) {
-    state.signedIn = v
+  setIsSignedIn (state, v) {
+    state.isSignedIn = v
   }
 }
 
@@ -24,14 +28,16 @@ function signIn ({ commit }, params) {
     .then(res => {
       Vue.prototype.$cookies.set('token', res.data.token, '9H', '/')
 
+      commit('setToken', res.data.token)
       commit('setUser', res.data.user)
-      commit('setSignedIn', true)
+      commit('setIsSignedIn', true)
     })
 }
 
 function signOut ({ commit }) {
   Vue.prototype.$cookies.remove('token')
 
+  commit('setToken', '')
   commit('setUser', {})
   commit('setSignedIn', false)
 }
