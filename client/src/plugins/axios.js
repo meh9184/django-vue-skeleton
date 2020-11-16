@@ -20,7 +20,9 @@ const _axios = axios.create(config)
 
 _axios.interceptors.request.use(
   function(config) {
-    // Do something before request is sent
+    let token = window.$cookies.get('token')
+    if (token) config.headers.common['Authorization'] = `JWT ${token}`
+
     return config
   },
   function(error) {
